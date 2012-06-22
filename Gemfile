@@ -1,5 +1,8 @@
 source :rubygems
 
-gem "sinatra"
+gem 'sinatra'
+gem 'sequel'
+gem 'pg'
 gem 'omniauth-github'
-gem 'rack-flash'
+gem 'sinatra-flash'
+gem 'octokit'
