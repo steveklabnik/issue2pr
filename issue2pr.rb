@@ -27,7 +27,7 @@ class Issue2Pr < Sinatra::Base
   use Rack::Session::Cookie
 
   use OmniAuth::Builder do
-    provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
+    provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "repo"
   end
 
   helpers do
