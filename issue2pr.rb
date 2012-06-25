@@ -24,6 +24,8 @@ end
 
 class Issue2Pr < Sinatra::Base
 
+  enable :inline_templates
+
   use Rack::Session::Cookie
 
   use OmniAuth::Builder do
@@ -39,20 +41,9 @@ class Issue2Pr < Sinatra::Base
   get '/' do
     if current_user
       current_user.id.to_s + " ... " + session[:user_id].to_s 
-      <<-HTML
-      <h1>ZOMG</h1>
-      <form action="/transmute" method="POST">
-        User (like 'shoes'): <input type="text" name="user"><br />
-        Repo (like 'shoes4'): <input type="text" name="repo"><br />
-        Issue (like '1'): <input type="text" name="issue"><br />
-        Head (like 'steveklabnik:master'): <input type="text" name="head"><br />
-        Base (like 'master'): <input type="text" name="base"><br />
-        <input type="submit"><br />
-        The example names would turn issue #1 on shoes/shoes4 into a pull request, asking to merge steveklabnik:master into master.
-      </form>
-      HTML
+      erb :form
     else
-      "<a href='/auth/github'>Sign in with GitHub</a> : #{session[:user_id]}"
+      erb :index
     end
   end
 
@@ -109,3 +100,48 @@ class Issue2Pr < Sinatra::Base
     redirect '/'
   end
 end
+
+__END__
+@@ layout
+<!doctype html >
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Issue to Pull Request</title>
+  </head>
+  <body>
+    <%= yield %>
+    <footer>A <a href="http://steveklabnik.com">@steveklabnik</a> joint.</footer>
+  </body>
+</html>
+
+@@ index
+<h1>Issue to Pull Request</h1>
+<p>Ever wanted to add some commits that fix an Issue you had? Ever get mad that
+you have to open a new Pull Request, comment that you're fixing that Issue,
+make sure it's closed when you're done? Ugh!</p>
+<p>Be chafed no longer. Simply give me the commits you'd like to add and a
+link to an issue, and I'll make the magic happen.</p>
+<h2>Let's do this</h2>
+<p>
+  First you've gotta <a href='/auth/github'>sign in with GitHub</a>.
+</p>
+
+<h3>How does it work?</h3>
+<p>GitHub has this functionality in their API, but not their UI. So it's super
+simple. It's also open source, you can check out <a href="https://github.com/steveklabnik/issue2pr">the source code to issue2pr on GitHub</a>.</p>
+
+@@ form 
+
+<h1>LET"S DO THIS</h1>
+<form action="/transmute" method="POST">
+  <label for="url">URL for the Issue (like 'https://github.com/steveklabnik/issue2pr/issues/1')</label><br />
+  <input type="text" name="url" id="url"><br />
+  <label for="head">Head (like 'steveklabnik:bugfix'):</label><br />
+  <input type="text" name="head" id="head"><br />
+  <label for="base">Base (like 'master'):</label><br />
+  <input type="text" name="base" id="base"><br />
+  <input type="submit"><br />
+</form>
+<p>The example names would turn issue #1 on steveklabnik/issue2pr into a pull request, asking to merge steveklabnik:bugfix into master.</p>
+
