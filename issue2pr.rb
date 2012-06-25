@@ -40,7 +40,6 @@ class Issue2Pr < Sinatra::Base
 
   get '/' do
     if current_user
-      current_user.id.to_s + " ... " + session[:user_id].to_s 
       erb :form
     else
       erb :index
@@ -48,9 +47,7 @@ class Issue2Pr < Sinatra::Base
   end
 
   post '/transmute' do
-    puts "URL: " + params[:url]
     params[:url] =~ /https:\/\/github.com\/(\w+)\/(\w+)\/issues\/(\d+)/
-    puts "NUMBERS: #{$1} #{$2} #{$3}"
     json = %Q{{"issue":"#{$3}","head":"#{params[:head]}","base":"#{params[:base]}"}}
     uri = %Q{https://api.github.com/repos/#{$1}/#{$2}/pulls?access_token=#{session[:token]}}
 
@@ -68,9 +65,6 @@ class Issue2Pr < Sinatra::Base
       response = http.request req
     end
 
-    puts res.code
-    puts res.message
-      
     redirect "/"
   end
 
