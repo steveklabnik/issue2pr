@@ -48,8 +48,11 @@ class Issue2Pr < Sinatra::Base
   end
 
   post '/transmute' do
-    json = %Q{{"issue":"#{params[:issue]}","head":"#{params[:head]}","base":"#{params[:base]}"}}
-    uri = %Q{https://api.github.com/repos/#{params[:user]}/#{params[:repo]}/pulls?access_token=#{session[:token]}}
+    puts "URL: " + params[:url]
+    params[:url] =~ /https:\/\/github.com\/(\w+)\/(\w+)\/issues\/(\d+)/
+    puts "NUMBERS: #{$1} #{$2} #{$3}"
+    json = %Q{{"issue":"#{$3}","head":"#{params[:head]}","base":"#{params[:base]}"}}
+    uri = %Q{https://api.github.com/repos/#{$1}/#{$2}/pulls?access_token=#{session[:token]}}
 
     uri = URI(uri)
 
