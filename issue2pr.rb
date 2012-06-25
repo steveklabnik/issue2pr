@@ -4,24 +4,6 @@ require 'net/http'
 require 'net/https'
 require 'uri'
 
-DB = Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://db/development.db')
-Sequel::Model.plugin(:schema)
-
-class User < Sequel::Model
- set_schema do
-    primary_key :id
-    
-    integer :uid
-
-    varchar :nickname, :empty => false
-    varchar :name, :empty => false
-    timestamp :created_at
-  end
-
-  create_table unless table_exists?
-end
-
-
 class Issue2Pr < Sinatra::Base
 
   enable :inline_templates
@@ -32,14 +14,8 @@ class Issue2Pr < Sinatra::Base
     provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "repo"
   end
 
-  helpers do
-    def current_user
-      @current_user ||= User[session[:user_id]] if session[:user_id]
-    end
-  end
-
   get '/' do
-    if current_user
+    if session[:token]
       erb :form
     else
       erb :index
@@ -72,23 +48,11 @@ class Issue2Pr < Sinatra::Base
     auth = request.env['omniauth.auth']
     session[:token] = auth["credentials"]["token"]
 
-    user = User.first(:uid => auth["uid"])
-    unless user
-      user = User.create(
-        :uid => auth["uid"],
-        :nickname => auth["info"]["nickname"], 
-        :name => auth["info"]["name"],
-        :created_at => Time.now)
-    end
-
-    session[:user_id] = user.id
-
     redirect '/'
   end
 
   get "/logout" do
     session[:token] = nil
-    session[:user_id] = nil
     redirect '/'
   end
 
