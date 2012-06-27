@@ -35,6 +35,7 @@ class Issue2Pr < Sinatra::Base
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
 
+    response = nil
     res = http.start do |http|
       req = Net::HTTP::Post.new(uri.request_uri)
       req["Content-type"] = "application/json"
@@ -44,7 +45,7 @@ class Issue2Pr < Sinatra::Base
       response = http.request req
     end
 
-    if res.code = '201'
+    if response.code = '201'
       flash[:success] = "Awesome! Check out <a href='#{params[:url]}'>Issue #{$3}</a> and it should be a Pull Request now!"
     else
       flash[:error] = "There was some kind of error. Sorry!"
