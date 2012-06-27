@@ -69,40 +69,102 @@ __END__
   <head>
     <meta charset="utf-8" />
     <title>Issue to Pull Request</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link href="bootstrap-responsive.css" rel="stylesheet">
+    <link href="docs.css" rel="stylesheet">
   </head>
   <body>
-    <%= yield %>
-    <footer>A <a href="http://steveklabnik.com">@steveklabnik</a> joint.</footer>
+    <div class="container">
+      <header class="jumbotron subhead" id="overview">
+        <h1>Issue2Pr</h1>
+        <p class="lead">Turn your Issues into Pull Requests</p>
+      </header>
+      <%= yield %>
+    </div>
+    <footer class="footer"><p class="pull-right">A <a href="http://steveklabnik.com">@steveklabnik</a> joint.</p></footer>
   </body>
 </html>
 
 @@ index
-<h1>Issue to Pull Request</h1>
-<p>Ever wanted to add some commits that fix an Issue you had? Ever get mad that
-you have to open a new Pull Request, comment that you're fixing that Issue,
-make sure it's closed when you're done? Ugh!</p>
-<p>Be chafed no longer. Simply give me the commits you'd like to add and a
-link to an issue, and I'll make the magic happen.</p>
-<h2>Let's do this</h2>
-<p>
-  First you've gotta <a href='/auth/github'>sign in with GitHub</a>.
-</p>
+<section>
+  <div class="page-header">
+    <h1>About</h1>
+  </div>
 
-<h3>How does it work?</h3>
-<p>GitHub has this functionality in their API, but not their UI. So it's super
-simple. It's also open source, you can check out <a href="https://github.com/steveklabnik/issue2pr">the source code to issue2pr on GitHub</a>.</p>
+  <div class="row">
+    <div class="span12">
+      <p>Ever wanted to add some commits that fix an Issue you had? Ever get mad that
+      you have to open a new Pull Request, comment that you're fixing that Issue,
+      make sure it's closed when you're done? Ugh!</p>
+      <p>Be chafed no longer. Simply give me the commits you'd like to add and a
+      link to an issue, and I'll make the magic happen.</p>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="page-header">
+    <h1>Let's do this</h1>
+  </div>
 
-@@ form 
+  <div class="row">
+    <div class="span12">
+      <p>
+        First you've gotta <a href='/auth/github'>sign in with GitHub</a>.
+      </p>
+    </div>
+  </div>
+</section>
 
-<h1>LET"S DO THIS</h1>
-<form action="/transmute" method="POST">
-  <label for="url">URL for the Issue (like 'https://github.com/steveklabnik/issue2pr/issues/1')</label><br />
-  <input type="text" name="url" id="url"><br />
-  <label for="head">Head (like 'steveklabnik:bugfix'):</label><br />
-  <input type="text" name="head" id="head"><br />
-  <label for="base">Base (like 'master'):</label><br />
-  <input type="text" name="base" id="base"><br />
-  <input type="submit"><br />
-</form>
-<p>The example names would turn issue #1 on steveklabnik/issue2pr into a pull request, asking to merge steveklabnik:bugfix into master.</p>
+<section>
+  <div class="page-header">
+    <h1>How does it work?</h1>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <p>GitHub has this functionality in their API, but not their UI. So it's super
+      simple. It's also open source, you can check out <a href="https://github.com/steveklabnik/issue2pr">the source code to issue2pr on GitHub</a>.</p>
+    </div>
+  </div>
+</section>
+
+@@ form
+
+<section>
+  <div class="page-header">
+    <h1>LET"S DO THIS</h1>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <form action="/transmute" method="POST">
+        <div class="control-group">
+          <label class="control-label" for="url">Issue URL</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="url" name="url">
+            <p class="help-block">like 'https://github.com/steveklabnik/issue2pr/issues/1'</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="head">HEAD</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="head" name="head">
+            <p class="help-block">like 'steveklabnik:bugfix', this is probably a feature branch</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="base">Base</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="base" name="base">
+            <p class="help-block">like 'master'</p>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Transmute!</button>
+        </div>
+      </form>
+      <p>The example names would turn issue #1 on steveklabnik/issue2pr into a pull request, asking to merge steveklabnik:bugfix into master.</p>
+    </div>
+  </div>
+</section>
 
