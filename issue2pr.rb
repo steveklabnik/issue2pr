@@ -4,11 +4,14 @@ require 'net/http'
 require 'net/https'
 require 'uri'
 
+require 'sinatra/flash'
+
 class Issue2Pr < Sinatra::Base
 
   enable :inline_templates
 
   use Rack::Session::Cookie
+  register Sinatra::Flash
 
   use OmniAuth::Builder do
     provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "repo"
@@ -41,6 +44,12 @@ class Issue2Pr < Sinatra::Base
       response = http.request req
     end
 
+    if res.code = '201'
+      flash[:success] = "Awesome! Check out <a href='#{params[:url]}'>Issue #{$3}</a> and it should be a Pull Request now!"
+    else
+      flash[:error] = "There was some kind of error. Sorry!"
+    end
+
     redirect "/"
   end
 
@@ -57,7 +66,7 @@ class Issue2Pr < Sinatra::Base
   end
 
   get '/auth/failure' do
-    flash[:notice] = params[:message] # if using sinatra-flash or rack-flash
+    flash[:error] = params[:message] # if using sinatra-flash or rack-flash
     redirect '/'
   end
 end
@@ -79,6 +88,15 @@ __END__
         <h1>Issue2Pr</h1>
         <p class="lead">Turn your Issues into Pull Requests</p>
       </header>
+      <% flash.each do |type, message| %>
+        <div class="row">
+          <div class="span12">
+	          <div class="alert alert-<%= type%>">
+              <p><%= message %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
       <%= yield %>
     </div>
     <footer class="footer"><p class="pull-right">A <a href="http://steveklabnik.com">@steveklabnik</a> joint.</p></footer>
