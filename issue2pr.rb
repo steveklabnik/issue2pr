@@ -45,7 +45,7 @@ class Issue2Pr < Sinatra::Base
       response = http.request req
     end
 
-    flash[:success] = "Awesome! Check out <a href='#{params[:url]}'>Issue #{$3}</a> and it should be a Pull Request now! Unless it didn't work. In which case, it won't."
+    flash[:success] = "Awesome! Check out <a href='#{params[:url]}'>Issue ##{$3}</a> and it should be a Pull Request now! Unless it didn't work. In which case, it won't."
 
     redirect "/"
   end
