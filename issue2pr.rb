@@ -147,7 +147,7 @@ __END__
 
 <section>
   <div class="page-header">
-    <h1>LET"S DO THIS</h1>
+    <h1>LET'S DO THIS</h1>
   </div>
 
   <div class="row">
