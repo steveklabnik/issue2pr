@@ -36,7 +36,7 @@ class Issue2Pr < Sinatra::Base
     http.use_ssl = true
 
     response = nil
-    res = http.start do |http|
+    http.start do |http|
       req = Net::HTTP::Post.new(uri.request_uri)
       req["Content-type"] = "application/json"
       req["Accept"] = "application/json"
