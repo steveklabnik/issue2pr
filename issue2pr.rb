@@ -15,6 +15,7 @@ class Issue2Pr < Sinatra::Base
 
   use OmniAuth::Builder do
     provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "repo"
+    provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "public_repo", path_prefix: "/auth/public"
   end
 
   get '/' do
@@ -124,7 +125,7 @@ __END__
   <div class="row">
     <div class="span12">
       <p>
-        First you've gotta <a href='/auth/github'>sign in with GitHub</a>.
+        First you've gotta <a href='/auth/github'>sign in with GitHub</a> or <a href='/auth/public/github'>just with Public Access</a> .
       </p>
     </div>
   </div>
