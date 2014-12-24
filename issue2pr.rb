@@ -144,6 +144,18 @@ __END__
   </div>
 </section>
 
+<section>
+  <div class="page-header">
+    <h1>Can I do this from the command line?</h1>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <p>Sure!  See <a href="https://github.com/djmitche/git-issue2pr">git-issue2pr</a>.</p>
+    </div>
+  </div>
+</section>
+
 @@ form
 
 <section>
